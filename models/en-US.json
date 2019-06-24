@@ -1,0 +1,229 @@
+{
+    "interactionModel": {
+        "languageModel": {
+            "invocationName": "bangalore metro",
+            "intents": [
+                {
+                    "name": "AMAZON.CancelIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.HelpIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.StopIntent",
+                    "samples": []
+                },
+                {
+                    "name": "FareIntent",
+                    "slots": [
+                        {
+                            "name": "sourceStation",
+                            "type": "stationNames",
+                            "samples": [
+                                "{sourceStation}",
+                                "from {sourceStation}",
+                                "Let us start from {sourceStation}",
+                                "I want to start from {sourceStation}"
+                            ]
+                        },
+                        {
+                            "name": "destinationStation",
+                            "type": "stationNames",
+                            "samples": [
+                                "Let's go to {destinationStation}",
+                                "I want to go to {destinationStation}",
+                                "{destinationStation}"
+                            ]
+                        }
+                    ],
+                    "samples": [
+                        "I want to go to {destinationStation}",
+                        "let's go from {sourceStation} to {destinationStation}",
+                        "I want to go from {sourceStation} to {destinationStation}",
+                        "help me with the fare"
+                    ]
+                },
+                {
+                    "name": "AMAZON.NavigateHomeIntent",
+                    "samples": []
+                }
+            ],
+            "types": [
+                {
+                    "name": "stationNames",
+                    "values": [
+                        {
+                            "name": {
+                                "value": "Nagasandra"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "Dasarahalli"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "Jalahalli"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "Peenya Industry"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "Peenya"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "Yeshwantpur Industry"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "Yeshwantpur"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "Sandal Soap Factory"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "Mahalakshmi"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "Rajaji Nagar"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "Kuvempu Road"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "Srirampura"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "Sampige Road"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "Majestic"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "Chickpete"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "Krishna Rajendra Market"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "National College"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "Lalbagh"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "South End Circle"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "Jayanagar"
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        "dialog": {
+            "intents": [
+                {
+                    "name": "FareIntent",
+                    "delegationStrategy": "ALWAYS",
+                    "confirmationRequired": false,
+                    "prompts": {},
+                    "slots": [
+                        {
+                            "name": "sourceStation",
+                            "type": "stationNames",
+                            "confirmationRequired": false,
+                            "elicitationRequired": true,
+                            "prompts": {
+                                "elicitation": "Elicit.Slot.992894670522.134501469421"
+                            }
+                        },
+                        {
+                            "name": "destinationStation",
+                            "type": "stationNames",
+                            "confirmationRequired": false,
+                            "elicitationRequired": true,
+                            "prompts": {
+                                "elicitation": "Elicit.Slot.992894670522.1192140516069"
+                            }
+                        }
+                    ]
+                }
+            ],
+            "delegationStrategy": "ALWAYS"
+        },
+        "prompts": [
+            {
+                "id": "Elicit.Slot.992894670522.134501469421",
+                "variations": [
+                    {
+                        "type": "PlainText",
+                        "value": "Ok. Starting from which station?"
+                    },
+                    {
+                        "type": "PlainText",
+                        "value": "where do you want to start from?"
+                    },
+                    {
+                        "type": "PlainText",
+                        "value": "Which station would you like to start from?"
+                    }
+                ]
+            },
+            {
+                "id": "Elicit.Slot.992894670522.1192140516069",
+                "variations": [
+                    {
+                        "type": "PlainText",
+                        "value": "Can you help me with your destination station?"
+                    },
+                    {
+                        "type": "PlainText",
+                        "value": "And where do you want to go to, today?"
+                    },
+                    {
+                        "type": "PlainText",
+                        "value": "Where do you want to go to?"
+                    }
+                ]
+            }
+        ]
+    }
+}

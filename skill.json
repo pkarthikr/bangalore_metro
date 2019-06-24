@@ -1,0 +1,41 @@
+{
+  "manifest": {
+    "publishingInformation": {
+      "locales": {
+        "en-US": {
+          "summary": "Sample Short Description",
+          "examplePhrases": [
+            "Alexa open bangalore metro",
+            "hello",
+            "help"
+          ],
+          "name": "Bangalore-Metro",
+          "description": "Sample Full Description"
+        },
+        "en-IN": {
+          "summary": "Sample Short Description",
+          "examplePhrases": [
+            "Alexa open bangalore metro",
+            "hello",
+            "help"
+          ],
+          "name": "Bangalore-Metro",
+          "description": "Sample Full Description"
+        }
+      },
+      "isAvailableWorldwide": true,
+      "testingInstructions": "Sample Testing Instructions.",
+      "category": "KNOWLEDGE_AND_TRIVIA",
+      "distributionCountries": []
+    },
+    "apis": {
+      "custom": {
+        "endpoint": {
+          "sourceDir": "lambda/custom",
+          "uri": "ask-custom-Bangalore-Metro-default"
+        }
+      }
+    },
+    "manifestVersion": "1.0"
+  }
+}
