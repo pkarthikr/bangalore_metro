@@ -1,70 +1,191 @@
-{	
-"green": [
-	{
-		"name":"Nagasandra"
+[{
+		"name":"Nagasandra",
+		"line":"green",
+		"order":1
 	},
 	{
-		"name":"Dasarahalli"
+		"name":"Dasarahalli",
+		"line":"green",
+		"order":2
 	},
 	{
-		"name":"Jalahalli"
+		"name":"Jalahalli",
+		"line":"green",
+		"order":3
 	},
 	{
-		"name":"Peenya Industry"
+		"name":"Peenya Industry",
+		"line":"green",
+		"order":4
 	},
 	{
-		"name":"Peenya"
+		"name":"Peenya",
+		"line":"green",
+		"order":5
 	},
 	{
-		"name":"Yeshwantpur Industry"
+		"name":"Yeshwantpur Industry",
+		"line":"green",
+		"order":6
 	},
 	{
-		"name":"Yeshwantpur"
+		"name":"Yeshwantpur",
+		"line":"green",
+		"order":7
 	},
 	{
-		"name":"Sandal Soap Factory"
+		"name":"Sandal Soap Factory",
+		"line":"green",
+		"order":8
 	},
 	{
-		"name":"Mahalakshmi"
+		"name":"Mahalakshmi",
+		"line":"green",
+		"order":9
 	},
 	{
-		"name":"Rajaji Nagar"
+		"name":"Rajaji Nagar",
+		"line":"green",
+		"order":10
 	},
 	{
-		"name":"Kuvempu Road"
+		"name":"Kuvempu Road",
+		"line":"green",
+		"order":11
 	},
 	{
-		"name":"Srirampura"
+		"name":"Srirampura",
+		"line":"green",
+		"order":12
 	},
 	{
-		"name":"Sampige Road"
+		"name":"Sampige Road",
+		"line":"green",
+		"order":13
 	},
 	{
-		"name":"Majestic"
+		"name":"Majestic",
+		"line":"green",
+		"order":14
 	},
 	{
-		"name":"Chickpete"
+		"name":"Chickpete",
+		"line":"green",
+		"order":15
 	},
 	{
-		"name":"Krishna Rajendra Market"
+		"name":"Krishna Rajendra Market",
+		"line":"green",
+		"order":16
 	},
 	{
-		"name":"National College"
+		"name":"National College",
+		"line":"green",
+		"order":17
 	},
 	{
-		"name":"Lalbagh"
+		"name":"Lalbagh",
+		"line":"green",
+		"order":18
 	},
 	{
-		"name":"South End Circle"
+		"name":"South End Circle",
+		"line":"green",
+		"order":19
 	},
 	{
-		"name":"Jayanagar"
+		"name":"Jayanagar",
+		"line":"green",
+		"order":20
 	},
 	{
-		"name":"Rashtreeya Vidyalaya Road"
+		"name":"Rashtreeya Vidyalaya Road",
+		"line":"green",
+		"order":21
 	},
 	{
-		"name":"Banashankari"
+		"name":"Banashankari",
+		"line":"green",
+		"order":22
+	},
+	{
+		"name":"Mysore Road",
+		"line":"purple",
+		"order":1
+	},
+	{
+		"name":"Deepanjali Nagar",
+		"line":"purple",
+		"order":1
+	},
+	{
+		"name":"Atiguppe",
+		"line":"purple",
+		"order":1
+	},
+	{
+		"name":"Vijayanagar",
+		"line":"purple",
+		"order":1
+	},
+	{
+		"name":"Hosahalli",
+		"line":"purple",
+		"order":1
+	},
+	{
+		"name":"Magadi Road",
+		"line":"purple",
+		"order":1
+	},
+	{
+		"name":"City Railway Station",
+		"line":"purple",
+		"order":1
+	},
+	{
+		"name":"Sir M. Visveshwaraya",
+		"line":"purple",
+		"order":1
+	},
+	{
+		"name":"Vidhana Soudha",
+		"line":"purple",
+		"order":1
+	},
+	{
+		"name":"Cubbon Park",
+		"line":"purple",
+		"order":1
+	},
+	{
+		"name":"Mahatma Gandhi Road",
+		"line":"purple",
+		"order":1
+	},
+	{
+		"name":"Trinity",
+		"line":"purple",
+		"order":1
+	},
+	{
+		"name":"Halasura",
+		"line":"purple",
+		"order":1
+	},
+	{
+		"name":"Indiranagar",
+		"line":"purple",
+		"order":1
+	},
+	{
+		"name":"Swami Vivekananda Road",
+		"line":"purple",
+		"order":1
+	},
+	{
+		"name":"Baiyappanahalli",
+		"line":"purple",
+		"order":1
 	}
 ]
-}
