@@ -46,7 +46,7 @@ const FareIntentHandler = {
       }
       return false;
       });
-      speechText += `green line. Get down ${stationsFiltered.length} stations from ${sourceStation}. The stations are`;
+      speechText += ` ${sourceLine[0].line} line. Get down ${stationsFiltered.length} stations from ${sourceStation}. The stations are`;
 
       // When travelling the opposite direction
       if(sourceOrder > destinationOrder){
