@@ -14,11 +14,6 @@ const LaunchRequestHandler = {
 
     return handlerInput.responseBuilder
       .speak(speechText)
-      .addDelegateDirective({
-        name: 'FareIntent',
-        confirmationStatus: 'NONE',
-        slots: {}
-      })
       .reprompt(speechText)
       .withSimpleCard('Hello World', speechText)
       .getResponse();
@@ -37,16 +32,33 @@ const FareIntentHandler = {
     const sourceLine = stations.filter(x => x.name === sourceStation);
     const destinationLine = stations.filter(x => x.name === destinationStation);
 
-    var speechText = `Okay! So you want to go from ${sourceStation} to ${destinationStation}`;
+    var speechText = `Okay! So to go from ${sourceStation} to ${destinationStation}, you will have to take the`;
 
-    if(sourceLine[0].line == "green" && destinationLine[0].line == "green"){
+    if((sourceLine[0].line == "green" && destinationLine[0].line == "green")|| (sourceLine[0].line == "purple" && destinationLine[0].line == "purple" )){
       var sourceOrder = sourceLine[0].order;
       var destinationOrder = destinationLine[0].order;
       console.log(sourceOrder);
       console.log(destinationOrder);
-      const stationsFiltered = stations.filter((x => x.order < sourceOrder && x.order > destinationOrder) || (x => x.order > sourceOrder && x.order < destinationOrder));
+      var stationsFiltered = stations.filter(x => {if(x.order < sourceOrder && x.order > destinationOrder && x.line == sourceLine[0].line){
+        return true;
+      } if(x.order > sourceOrder && x.order < destinationOrder && x.line == sourceLine[0].line){
+        return true;
+      }
+      return false;
+      });
+      speechText += `green line. Get down ${stationsFiltered.length} stations from ${sourceStation}. The stations are`;
+
+      // When travelling the opposite direction
+      if(sourceOrder > destinationOrder){
+        stationsFiltered = stationsFiltered.sort(function(a,b){
+          return b.order - a.order;
+        });
+      }
+      console.log("Are we here");
       console.log(stationsFiltered);
-      speechText = `We are on same Line`;
+      stationsFiltered.forEach(function(station){
+        speechText += `<break time = "1s"/>${station.name}`
+      });
     }
 
     return handlerInput.responseBuilder
