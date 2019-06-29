@@ -104,9 +104,14 @@
 		"order":21
 	},
 	{
-		"name":"Banashankari",
+		"name":"Jaya Prakash Nagar",
 		"line":"green",
 		"order":22
+	},
+	{
+		"name":"Yelachenahalli",
+		"line":"green",
+		"order":23
 	},
 	{
 		"name":"Mysore Road",
