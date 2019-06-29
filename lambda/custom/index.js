@@ -37,8 +37,7 @@ const FareIntentHandler = {
     if((sourceLine[0].line == "green" && destinationLine[0].line == "green")|| (sourceLine[0].line == "purple" && destinationLine[0].line == "purple" )){
       var sourceOrder = sourceLine[0].order;
       var destinationOrder = destinationLine[0].order;
-      console.log(sourceOrder);
-      console.log(destinationOrder);
+      
       var stationsFiltered = stations.filter(x => {if(x.order < sourceOrder && x.order > destinationOrder && x.line == sourceLine[0].line){
         return true;
       } if(x.order > sourceOrder && x.order < destinationOrder && x.line == sourceLine[0].line){
@@ -46,7 +45,7 @@ const FareIntentHandler = {
       }
       return false;
       });
-      speechText += ` ${sourceLine[0].line} line. Get down ${stationsFiltered.length} stations from ${sourceStation}. The stations are`;
+      speechText += ` ${sourceLine[0].line} line. Get down ${stationsFiltered.length} stations from ${sourceStation}. ${destinationStation} will come right after`;
 
       // When travelling the opposite direction
       if(sourceOrder > destinationOrder){
@@ -54,11 +53,47 @@ const FareIntentHandler = {
           return b.order - a.order;
         });
       }
-      console.log("Are we here");
-      console.log(stationsFiltered);
-      stationsFiltered.forEach(function(station){
-        speechText += `<break time = "1s"/>${station.name}`
+
+      speechText += ` ${stationsFiltered[stationsFiltered.length-1].name} station`;
+      
+      // stationsFiltered.forEach(function(station){
+      //   speechText += `<break time = "1s"/>${station.name}`
+      // });
+    } else if(sourceLine[0].line == "green" && destinationLine[0].line == "purple"){
+      // When you have to switch lines
+      var sourceOrder = sourceLine[0].order;
+      var destinationOrder = destinationLine[0].order;
+      var majesticGreenOrder = 14;
+      var majesticPurpleOrder = 8;
+      var speechText = `Okay! So to go from ${sourceStation} to ${destinationStation}, you will have to switch from green to purple line. From ${sourceStation}, take the train towards`;
+      if(sourceOrder < 14){
+          speechText += `Yelachenahalli`;
+      } else{
+          speechText += `Nagasandra`;
+      }
+      var distance = Math.abs(sourceOrder - majesticGreenOrder);
+      speechText += ` and get down at Majestic which is ${distance - 1} stations away. From Majestic, take the train towards`;
+      if(destinationOrder > 8){
+        speechText += 'Baipaynahalli';
+      } else {
+        speechText += 'Mysore Road';
+      }
+      var destinationDistance = Math.abs(destinationOrder - majesticPurpleOrder);
+      speechText += ` and get down ${destinationDistance - 1} stations later. ${destinationStation} will come right after`;
+      var stationsFiltered = stations.filter(x => {if(x.order == destinationOrder - 1 && x.line == destinationLine[0].line){
+        return true;
+      } 
+      return false;
       });
+      // if(destinationOrder > 8){
+      //   stationsFiltered = stationsFiltered.sort(function(a,b){
+      //     return b.order - a.order;
+      //   });
+      // }
+      console.log(destinationOrder);
+      console.log(stationsFiltered);
+      speechText += ` ${stationsFiltered[0].name} station`;
+
     }
 
     return handlerInput.responseBuilder
