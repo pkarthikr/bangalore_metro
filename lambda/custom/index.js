@@ -3,6 +3,7 @@
 
 const Alexa = require('ask-sdk-core');
 const stations = require('./stations.json');
+const SmartCardArray=  require('./SmartCardInfo.json');
 const SKILL_NAME = "Bangalore Metro";
 
 const LaunchRequestHandler = {
@@ -140,6 +141,27 @@ const RouteIntentHandler = {
   },
 };
 
+
+const SmartCardIntentHandler = {
+  canHandle(handlerInput) {
+    return handlerInput.requestEnvelope.request.type === 'IntentRequest' &&
+      handlerInput.requestEnvelope.request.intent.name === 'SmartCardIntent';
+  },
+  handle(handlerInput) {
+    var speechText = 'hello,welcome to smart card';
+    const action = handlerInput.requestEnvelope.request.intent.slots.action.resolutions.resolutionsPerAuthority[0].values[0].value.name;
+    //speechText+=`you will be able to ${action}`;
+    for(var i=0;i<3;i++){
+        if (action.toLowerCase().trim() === SmartCardArray.SmartCards[i].key.toLowerCase().trim())
+        speechText+= SmartCardArray.SmartCards[i].answer;
+        }
+    return handlerInput.responseBuilder
+      .speak(speechText)
+      .reprompt(speechText)
+      .getResponse();
+  },
+};
+
 const HelpIntentHandler = {
   canHandle(handlerInput) {
     return handlerInput.requestEnvelope.request.type === 'IntentRequest' &&
@@ -203,6 +225,7 @@ exports.handler = skillBuilder
   .addRequestHandlers(
     LaunchRequestHandler,
     RouteIntentHandler,
+    SmartCardIntentHandler,
     HelpIntentHandler,
     CancelAndStopIntentHandler,
     SessionEndedRequestHandler
