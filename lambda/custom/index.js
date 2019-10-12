@@ -2,8 +2,50 @@
 /* eslint-disable  no-console */
 
 const Alexa = require('ask-sdk-core');
-const stations = require('./stations.json');
-const SKILL_NAME = "Bangalore Metro";
+const i18n = require('i18next'); 
+const sprintf = require('i18next-sprintf-postprocessor');
+
+const { findStation, shortestRoute } = require('./libs/route');
+
+const languageStrings = {
+  'en-US' : require('./i18n/en-US'),
+  'en-IN' : require('./i18n/en-IN')
+}
+
+const LocalizationInterceptor = {
+  process(handlerInput) {
+      const localizationClient = i18n.use(sprintf).init({
+          lng: handlerInput.requestEnvelope.request.locale,
+          fallbackLng: 'en-US',
+          resources: languageStrings
+      });
+
+      localizationClient.localize = function () {
+          const args = arguments;
+          let values = [];
+
+          for (var i = 1; i < args.length; i++) {
+              values.push(args[i]);
+          }
+          const value = i18n.t(args[0], {
+              returnObjects: true,
+              postProcess: 'sprintf',
+              sprintf: values
+          });
+
+          if (Array.isArray(value)) {
+              return value[Math.floor(Math.random() * value.length)];
+          } else {
+              return value;
+          }
+      }
+
+      const attributes = handlerInput.attributesManager.getRequestAttributes();
+      attributes.t = function (...args) {
+          return localizationClient.localize(...args);
+      };
+  },
+};
 
 const LaunchRequestHandler = {
   canHandle(handlerInput) {
@@ -11,12 +53,14 @@ const LaunchRequestHandler = {
   },
   handle(handlerInput) {
 
-    const speechText = 'Welcome to Bangalore Metro. I can help you with the route from one station to another! Just say your origin and destination station to know your route.';
+    const requestAttributes = handlerInput.attributesManager.getRequestAttributes();
+
+    const speechText = requestAttributes.t('WELCOME');
 
     return handlerInput.responseBuilder
       .speak(speechText)
       .reprompt(speechText)
-      .withSimpleCard(SKILL_NAME, speechText)
+      .withSimpleCard(requestAttributes.t('SKILL_NAME'), speechText)
       .getResponse();
   },
 };
@@ -27,115 +71,110 @@ const RouteIntentHandler = {
       handlerInput.requestEnvelope.request.intent.name === 'RouteIntent';
   },
   handle(handlerInput) {
-    const sourceStation = handlerInput.requestEnvelope.request.intent.slots.sourceStation.resolutions.resolutionsPerAuthority[0].values[0].value.name;
-    const destinationStation = handlerInput.requestEnvelope.request.intent.slots.destinationStation.resolutions.resolutionsPerAuthority[0].values[0].value.name;
+    const requestAttributes = handlerInput.attributesManager.getRequestAttributes();
 
-    const sourceLine = stations.filter(x => x.name === sourceStation);
-    const destinationLine = stations.filter(x => x.name === destinationStation);
-    console.log("Our destination is ");
-    console.log(destinationLine);
-    var speechText = `Okay! So to go from ${sourceStation} to ${destinationStation}, you will have to take the`;
-    var sourceOrder = sourceLine[0].order;
-    var destinationOrder = destinationLine[0].order;
-    var majesticGreenOrder = 14;
-    var majesticPurpleOrder = 8;
+    const sourceStationId = handlerInput.requestEnvelope.request.intent.slots.sourceStation.resolutions.resolutionsPerAuthority[0].values[0].value.id;
+    const destinationStationId = handlerInput.requestEnvelope.request.intent.slots.destinationStation.resolutions.resolutionsPerAuthority[0].values[0].value.id;
 
-    if ((sourceLine[0].line == "green" && destinationLine[0].line == "green") || (sourceLine[0].line == "purple" && destinationLine[0].line == "purple")) {
-     
-      console.log("inbside green");
-      console.log(sourceLine);
-      var stationsFiltered = stations.filter(x => {
-        if (x.order < sourceOrder && x.order > destinationOrder && x.line == sourceLine[0].line) {
-          return true;
-        }
-        if (x.order > sourceOrder && x.order < destinationOrder && x.line == sourceLine[0].line) {
-          return true;
-        }
-        if (x.order == destinationOrder && x.line == sourceLine[0].line) {
-          return true;
-        }
-        return false;
-      });
-      speechText += ` ${sourceLine[0].line} line. Get down ${stationsFiltered.length} stations from ${sourceStation}. ${destinationStation} will come right after`;
+    const sourceStation = findStation(sourceStationId);
+    const destinationStation = findStation(destinationStationId);
 
-      // When travelling the opposite direction
-      if (sourceOrder > destinationOrder) {
-        stationsFiltered = stationsFiltered.sort(function (a, b) {
-          return b.order - a.order;
+    let shortRoute = shortestRoute(sourceStation, destinationStation);
+
+    let speechText = '';
+
+    if(shortRoute.lines.length === 1){
+      let route = shortRoute.routes[0];
+      if(route.source.id === route.previous.id){
+        speechText = requestAttributes.t('DIRECTION_NEXT_STATION', {
+          line: shortRoute.lines[0],
+          sourceStation: route.source.name,
+          destinationStation: route.destination.name
         });
       }
-      
-      speechText += ` ${stationsFiltered[stationsFiltered.length-1].name} station`;
-
-      if(destinationOrder - sourceOrder == 1 || sourceOrder - destinationOrder == -1){
-        speechText = `On the ${sourceLine[0].line} line, ${sourceStation} and ${destinationStation} are just next to each other`;
+      else{
+        speechText = requestAttributes.t('DIRECTION_WITHOUT_SWITCH', {
+          line: shortRoute.lines[0],
+          sourceStation: route.source.name,
+          destinationStation: route.destination.name,
+          previousStation: route.previous.name,
+          stationCount: route.stationCount
+        });
       }
-    } else if (sourceLine[0].line == "green" && destinationLine[0].line == "purple") {
-      // When you have to switch lines from green to purple
-      var speechText = `Okay! So to go from ${sourceStation} to ${destinationStation}, you will have to switch from green to purple line. From ${sourceStation}, take the train towards`;
-      if (sourceOrder < 14) {
-        speechText += `Yelachenahalli`;
-      } else {
-        speechText += `Nagasandra`;
+    }
+    else{
+      let lineOne = shortRoute.lines[0];
+      let lineTwo = shortRoute.lines[1];
+      let lineSwitchMessage = '';
+      if(shortRoute.lines.length === 2){
+        lineSwitchMessage = requestAttributes.t('LINE_ONLY_SWITCH', { lineOne, lineTwo });
       }
-      var distance = Math.abs(sourceOrder - majesticGreenOrder);
-      speechText += ` and get down at Majestic which is ${distance - 1} stations away. From Majestic, take the train towards`;
-      var destinationCalculation = 0;
-      if (destinationOrder > 8) {
-        speechText += 'Baipaynahalli';
-        destinationCalculation = destinationOrder - 1;
-      } else {
-        speechText += 'Mysore Road';
-        destinationCalculation = destinationOrder + 1;
+      else{
+        lineSwitchMessage = shortRoute.lines.map((line, index, lines) => {
+          if(index === 0){
+            return '';
+          }
+          else if(index === 1){
+            return requestAttributes.t('LINE_FIRST_SWITCH', {
+              lineOne: lines[0],
+              lineTwo: lines[1]
+            });
+          }
+          else if(index === lines.length - 1){
+            return requestAttributes.t('LINE_FINAL_SWITCH', {
+              lineLast: line
+            });
+          }
+          else{
+            return requestAttributes.t('LINE_NEXT_SWITCH', {
+              line
+            });
+          }
+        }).join(' ');
       }
-      var destinationDistance = Math.abs(destinationOrder - majesticPurpleOrder);
-      speechText += ` and get down ${destinationDistance - 1} stations later.`;
-      var stationsFiltered = stations.filter(x => {
-        if (x.order == destinationCalculation && x.line == destinationLine[0].line) {
-          return true;
+      let trainRouteMessage = shortRoute.routes.map((route, index, routes) => {
+        if(index === 0){
+          return requestAttributes.t('TRAIN_FIRST_ROUTE', {
+            line: route.source.line,
+            sourceStation: route.source.name,
+            destinationStation: route.destination.name,
+            previousStation: route.previous.name,
+            endStation: route.end.name,
+            stationCount: route.stationCount
+          })
         }
-        return false;
-      });
-     
-      if(stationsFiltered.length > 0){
-        speechText += ` ${destinationStation} will come right after. ${stationsFiltered[0].name} station`;
-      }
-
-    } else if (sourceLine[0].line == "purple" && destinationLine[0].line == "green"){
-      var speechText = `Okay! So to go from ${sourceStation} to ${destinationStation}, you will have to switch from purple to green line. From ${sourceStation}, take the train towards`;
-      if (sourceOrder < 8){
-        speechText += 'Baiyappanahalli';
-      } else {
-        speechText += 'Mysore Road';
-      }
-      var distance = Math.abs(sourceOrder - majesticPurpleOrder);
-      speechText += ` and get down at Majestic which is ${distance - 1} stations away. From Majestic, take the train towards`;
-      var destinationCalculation = 0;
-      if (destinationOrder > 14) {
-        speechText += 'Yelachenahalli';
-        destinationCalculation = destinationOrder - 1;
-      } else {
-        speechText += 'Nagasandra';
-        destinationCalculation = destinationOrder + 1
-      }
-      var destinationDistance = Math.abs(destinationOrder - majesticGreenOrder);
-      speechText += ` and get down ${destinationDistance - 1} stations later.`;
-      var stationsFiltered = stations.filter(x => {
-        if (x.order ==  destinationCalculation && x.line == destinationLine[0].line) {
-          return true;
+        else if(index === routes.length - 1){
+          return requestAttributes.t('TRAIN_LAST_ROUTE', {
+            line: route.source.line,
+            sourceStation: route.source.name,
+            destinationStation: route.destination.name,
+            previousStation: route.previous.name,
+            endStation: route.end.name,
+            stationCount: route.stationCount
+          })
         }
-        return false;
+        else{
+          return requestAttributes.t('TRAIN_NEXT_ROUTE', {
+            line: route.source.line,
+            sourceStation: route.source.name,
+            destinationStation: route.destination.name,
+            previousStation: route.previous.name,
+            endStation: route.end.name,
+            stationCount: route.stationCount
+          })
+        }
+      }).join(' ');
+      speechText = requestAttributes.t('DIRECTION_WITH_SWITCH', {
+        sourceStation: sourceStation.name,
+        destinationStation: destinationStation.name,
+        lineSwitchMessage,
+        trainRouteMessage
       });
-      console.log(stationsFiltered);
-      if(stationsFiltered.length > 0){
-        speechText += ` ${destinationStation} will come right after ${stationsFiltered[0].name} station`;
-      }
-
     }
     
     return handlerInput.responseBuilder
       .speak(speechText)
-      .withSimpleCard(SKILL_NAME, speechText)
+      .withSimpleCard(requestAttributes.t('SKILL_NAME'), speechText)
       .getResponse();
   },
 };
@@ -146,12 +185,14 @@ const HelpIntentHandler = {
       handlerInput.requestEnvelope.request.intent.name === 'AMAZON.HelpIntent';
   },
   handle(handlerInput) {
-    const speechText = 'I can help you with the route from one station to another. Just say your Origin station and your destination station to get started';
+    const requestAttributes = handlerInput.attributesManager.getRequestAttributes();
+
+    const speechText = requestAttributes.t('HELP');
 
     return handlerInput.responseBuilder
       .speak(speechText)
       .reprompt(speechText)
-      .withSimpleCard(SKILL_NAME, speechText)
+      .withSimpleCard(requestAttributes.t('SKILL_NAME'), speechText)
       .getResponse();
   },
 };
@@ -163,11 +204,13 @@ const CancelAndStopIntentHandler = {
         handlerInput.requestEnvelope.request.intent.name === 'AMAZON.StopIntent');
   },
   handle(handlerInput) {
-    const speechText = 'Goodbye!';
+    const requestAttributes = handlerInput.attributesManager.getRequestAttributes();
+
+    const speechText = requestAttributes.t('BYE');
 
     return handlerInput.responseBuilder
       .speak(speechText)
-      .withSimpleCard(SKILL_NAME, speechText)
+      .withSimpleCard(requestAttributes.t('SKILL_NAME'), speechText)
       .getResponse();
   },
 };
@@ -188,11 +231,13 @@ const ErrorHandler = {
     return true;
   },
   handle(handlerInput, error) {
-    console.log(`Error handled: ${error.message}`);
+    const requestAttributes = handlerInput.attributesManager.getRequestAttributes();
+
+    console.log(`Error handled: ${error.message}`, error);
 
     return handlerInput.responseBuilder
-      .speak('Sorry, I can\'t understand the command. Please say again.')
-      .reprompt('Sorry, I can\'t understand the command. Please say again.')
+      .speak(requestAttributes.t('ERROR'))
+      .reprompt(requestAttributes.t('ERROR'))
       .getResponse();
   },
 };
@@ -207,5 +252,6 @@ exports.handler = skillBuilder
     CancelAndStopIntentHandler,
     SessionEndedRequestHandler
   )
+  .addRequestInterceptors(LocalizationInterceptor)
   .addErrorHandlers(ErrorHandler)
   .lambda();

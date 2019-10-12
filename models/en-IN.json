@@ -66,192 +66,230 @@
                         {
                             "name": {
                                 "value": "Baiyappanahalli"
-                            }
+                            },
+                            "id": "station_39"
                         },
                         {
                             "name": {
                                 "value": "Swami Vivekananda Road"
-                            }
+                            },
+                            "id": "station_38"
                         },
                         {
                             "name": {
                                 "value": "Indiranagar"
-                            }
+                            },
+                            "id": "station_37"
                         },
                         {
                             "name": {
                                 "value": "Halasura"
-                            }
+                            },
+                            "id": "station_36"
                         },
                         {
                             "name": {
                                 "value": "Trinity"
-                            }
+                            },
+                            "id": "station_35"
                         },
                         {
                             "name": {
                                 "value": "Mahatma Gandhi Road"
-                            }
+                            },
+                            "id": "station_34"
                         },
                         {
                             "name": {
                                 "value": "Cubbon Park"
-                            }
+                            },
+                            "id": "station_33"
                         },
                         {
                             "name": {
                                 "value": "Vidhana Soudha"
-                            }
+                            },
+                            "id": "station_32"
                         },
                         {
                             "name": {
-                                "value": "Sir M. Visveshwaraya"
-                            }
+                                "value": "Sir. M. Visveshwaraya"
+                            },
+                            "id": "station_31"
                         },
                         {
                             "name": {
                                 "value": "City Railway Station"
-                            }
+                            },
+                            "id": "station_29"
                         },
                         {
                             "name": {
                                 "value": "Magadi Road"
-                            }
+                            },
+                            "id": "station_28"
                         },
                         {
                             "name": {
                                 "value": "Hosahalli"
-                            }
+                            },
+                            "id": "station_27"
                         },
                         {
                             "name": {
                                 "value": "Vijayanagar"
-                            }
+                            },
+                            "id": "station_26"
                         },
                         {
                             "name": {
                                 "value": "Atiguppe"
-                            }
+                            },
+                            "id": "station_25"
                         },
                         {
                             "name": {
                                 "value": "Deepanjali Nagar"
-                            }
+                            },
+                            "id": "station_24"
                         },
                         {
                             "name": {
                                 "value": "Mysore Road"
-                            }
+                            },
+                            "id": "station_23"
                         },
                         {
                             "name": {
                                 "value": "Nagasandra"
-                            }
+                            },
+                            "id": "station_0"
                         },
                         {
                             "name": {
                                 "value": "Yelachenahalli"
-                            }
+                            },
+                            "id": "station_22"
                         },
                         {
                             "name": {
                                 "value": "Jaya Prakash Nagar"
-                            }
+                            },
+                            "id": "station_21"
                         },
                         {
                             "name": {
                                 "value": "Dasarahalli"
-                            }
+                            },
+                            "id": "station_1"
                         },
                         {
                             "name": {
                                 "value": "Jalahalli"
-                            }
+                            },
+                            "id": "station_2"
                         },
                         {
                             "name": {
                                 "value": "Peenya Industry"
-                            }
+                            },
+                            "id": "station_3"
                         },
                         {
                             "name": {
                                 "value": "Peenya"
-                            }
+                            },
+                            "id": "station_4"
                         },
                         {
                             "name": {
                                 "value": "Yeshwantpur Industry"
-                            }
+                            },
+                            "id": "station_5"
                         },
                         {
                             "name": {
                                 "value": "Yeshwantpur"
-                            }
+                            },
+                            "id": "station_6"
                         },
                         {
                             "name": {
                                 "value": "Sandal Soap Factory"
-                            }
+                            },
+                            "id": "station_7"
                         },
                         {
                             "name": {
                                 "value": "Mahalakshmi"
-                            }
+                            },
+                            "id": "station_8"
                         },
                         {
                             "name": {
                                 "value": "Rajaji Nagar"
-                            }
+                            },
+                            "id": "station_9"
                         },
                         {
                             "name": {
                                 "value": "Kuvempu Road"
-                            }
+                            },
+                            "id": "station_10"
                         },
                         {
                             "name": {
                                 "value": "Srirampura"
-                            }
+                            },
+                            "id": "station_11"
                         },
                         {
                             "name": {
                                 "value": "Sampige Road"
-                            }
+                            },
+                            "id": "station_12"
                         },
                         {
                             "name": {
                                 "value": "Majestic"
-                            }
+                            },
+                            "id": "station_13"
                         },
                         {
                             "name": {
                                 "value": "Chickpete"
-                            }
+                            },
+                            "id": "station_14"
                         },
                         {
                             "name": {
                                 "value": "Krishna Rajendra Market"
-                            }
+                            },
+                            "id": "station_15"
                         },
                         {
                             "name": {
                                 "value": "National College"
-                            }
+                            },
+                            "id": "station_16"
                         },
                         {
                             "name": {
                                 "value": "Lalbagh"
-                            }
+                            },
+                            "id": "station_17"
                         },
                         {
                             "name": {
                                 "value": "South End Circle"
-                            }
+                            },
+                            "id": "station_18"
                         },
                         {
                             "name": {
                                 "value": "Jayanagar"
-                            }
+                            },
+                            "id": "station_19"
                         }
                     ]
                 }
